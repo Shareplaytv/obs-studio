@@ -27,6 +27,7 @@ struct ffmpeg_cfg {
 	const char *audio_settings;
 	int audio_mix_count;
 	int audio_tracks;
+	const char *audio_stream_names[MAX_AUDIO_MIXES];
 	enum AVPixelFormat format;
 	enum AVColorRange color_range;
 	enum AVColorPrimaries color_primaries;
@@ -42,6 +43,8 @@ struct ffmpeg_cfg {
 	const char *password;
 	const char *stream_id;
 	const char *encrypt_passphrase;
+	bool is_srt;
+	bool is_rist;
 };
 
 struct ffmpeg_audio_info {
@@ -73,7 +76,7 @@ struct ffmpeg_data {
 
 	/* audio_tracks is a bitmask storing the indices of the mixes */
 	int audio_tracks;
-	struct circlebuf excess_frames[MAX_AUDIO_MIXES][MAX_AV_PLANES];
+	struct deque excess_frames[MAX_AUDIO_MIXES][MAX_AV_PLANES];
 	uint8_t *samples[MAX_AUDIO_MIXES][MAX_AV_PLANES];
 	AVFrame *aframe[MAX_AUDIO_MIXES];
 
